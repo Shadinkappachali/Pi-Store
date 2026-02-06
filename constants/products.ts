@@ -28,7 +28,7 @@ export const PRODUCTS: Product[] = [
     { id: "10", name: "CoolStream Laptop Cooling Pad", price: 1599, originalPrice: 2499, rating: 4.3, reviews: 190, category: "Laptop Accessories", brand: "Cooler", image: "https://images.unsplash.com/photo-1588505794452-9e59ace3a24e?q=80&w=800&auto=format&fit=crop", available: false },
 
     // New Mobiles
-    { id: "m11", name: "iPhone 15 Pro", price: 129900, originalPrice: 134900, rating: 4.9, reviews: 210, category: "Mobile", brand: "Apple", image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=800&auto=format&fit=crop", available: true, isNew: true, badge: "Premium" },
+    { id: "m11", name: "iPhone 15 Pro", price: 129900, originalPrice: 134900, rating: 4.9, reviews: 210, category: "Mobile", brand: "Apple", image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?q=80&w=1200&auto=format&fit=crop", available: true, isNew: true, badge: "Premium" },
     { id: "m12", name: "Samsung Galaxy S24 Ultra", price: 124900, originalPrice: 129900, rating: 4.8, reviews: 180, category: "Mobile", brand: "Samsung", image: "https://images.unsplash.com/photo-1707240160333-e991262d1c68?q=80&w=800&auto=format&fit=crop", available: true, isNew: true, badge: "Top Rated" },
     { id: "m13", name: "Google Pixel 8 Pro", price: 106900, originalPrice: 109900, rating: 4.7, reviews: 95, category: "Mobile", brand: "Google", image: "https://images.unsplash.com/photo-1697203610931-18e384f67c46?q=80&w=800&auto=format&fit=crop", available: true },
 
