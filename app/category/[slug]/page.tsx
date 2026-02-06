@@ -30,12 +30,21 @@ const CATEGORY_DATA: Record<string, any> = {
     }
 };
 
-const MOCK_PRODUCTS = [
-    { id: "1", name: "HyperCharge 65W GaN Fast Charger", price: 2499, originalPrice: 3999, rating: 4.9, reviews: 1250, category: "Chargers", image: "" },
-    { id: "4", name: "DuraLink Pro USB-C Cable", price: 799, originalPrice: 1299, rating: 4.9, reviews: 2100, category: "Cables", image: "" },
-    { id: "7", name: "AirGuard iPhone 15 Case", price: 899, originalPrice: 1499, rating: 4.5, reviews: 1500, category: "Cases", image: "" },
-    { id: "2", name: "SonicSync Pro Earbuds", price: 1899, originalPrice: 2999, rating: 4.8, reviews: 840, category: "Earphones", image: "" },
-];
+import { PRODUCTS } from "@/constants/products";
+
+// SLUG TO CATEGORY MAPPING
+const SLUG_TO_CATEGORIES: Record<string, string[]> = {
+    mobile: ["Mobile", "Chargers", "Cables", "Cases", "Power Banks"],
+    laptop: ["Laptop", "Laptop Accessories", "Keyboards", "Mouse", "USB Hubs"],
+    chargers: ["Chargers"],
+    cables: ["Cables"],
+    earphones: ["Earphones"],
+    keyboards: ["Keyboards"],
+    mouse: ["Mouse"],
+    hubs: ["USB Hubs", "Laptop Accessories"],
+    storage: ["Storage"],
+    audio: ["Earphones"]
+};
 
 export default function CategoryPage() {
     const params = useParams();
@@ -46,6 +55,9 @@ export default function CategoryPage() {
         banner: "bg-primary",
         tags: ["Premium", "Reliable"]
     };
+
+    const categorySlugs = SLUG_TO_CATEGORIES[slug] || [slug.charAt(0).toUpperCase() + slug.slice(1)];
+    const products = PRODUCTS.filter(p => categorySlugs.includes(p.category));
 
     return (
         <div className="pb-24">
@@ -93,7 +105,7 @@ export default function CategoryPage() {
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-xs font-bold text-gray-400 uppercase">Price Range</label>
-                                        <input type="range" className="w-full accent-primary" min="0" max="5000" />
+                                        <input type="range" className="w-full accent-primary" min="0" max="300000" />
                                     </div>
                                 </div>
                             </div>
@@ -105,24 +117,22 @@ export default function CategoryPage() {
                     <main className="flex-1">
                         <div className="mb-8 flex items-center justify-between">
                             <h2 className="text-2xl font-bold text-secondary">Showing all products</h2>
-                            <span className="text-sm text-gray-500 font-medium">12 Results</span>
+                            <span className="text-sm text-gray-500 font-medium">{products.length} Results</span>
                         </div>
 
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                            {MOCK_PRODUCTS.map((p) => (
+                            {products.map((p) => (
                                 <ProductCard key={p.id} {...p} />
-                            ))}
-                            {/* Duplicate for demo grid feel */}
-                            {MOCK_PRODUCTS.map((p) => (
-                                <ProductCard key={p.id + "_copy"} {...p} />
                             ))}
                         </div>
 
-                        <div className="mt-16 flex justify-center">
-                            <Button variant="outline" size="lg" className="rounded-full px-12 font-bold h-14">
-                                Load More Products
-                            </Button>
-                        </div>
+                        {products.length > 12 && (
+                            <div className="mt-16 flex justify-center">
+                                <Button variant="outline" size="lg" className="rounded-full px-12 font-bold h-14">
+                                    Load More Products
+                                </Button>
+                            </div>
+                        )}
                     </main>
                 </div>
             </Container>

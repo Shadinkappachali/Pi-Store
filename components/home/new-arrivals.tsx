@@ -4,52 +4,9 @@ import { Container } from "@/components/ui/container";
 import { ProductCard } from "@/components/ui/product-card";
 import { motion } from "framer-motion";
 
-const NEW_ARRIVALS = [
-    {
-        id: "n1",
-        name: "UltraThin MacBook Pro Hardshell Case",
-        price: 999,
-        originalPrice: 1499,
-        rating: 4.8,
-        reviews: 120,
-        category: "Laptop",
-        badge: "New",
-        image: "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        id: "n2",
-        name: "NanoHub 7-in-1 USB-C Power Adapter",
-        price: 3299,
-        originalPrice: 4999,
-        rating: 4.9,
-        reviews: 45,
-        category: "Laptop",
-        badge: "New",
-        image: "https://images.unsplash.com/photo-1616422285623-13ff0167c95c?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        id: "n3",
-        name: "GripTek iPhone 15 Pro Max Silicone Case",
-        price: 699,
-        originalPrice: 999,
-        rating: 4.7,
-        reviews: 230,
-        category: "Mobile",
-        badge: "New",
-        image: "https://images.unsplash.com/photo-1603313011101-31c72ee2c606?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        id: "n4",
-        name: "VoltSafe Over-Current Voltage Protector",
-        price: 499,
-        originalPrice: 799,
-        rating: 4.6,
-        reviews: 80,
-        category: "Mobile",
-        badge: "New",
-        image: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?q=80&w=800&auto=format&fit=crop"
-    }
-];
+import { PRODUCTS } from "@/constants/products";
+
+const NEW_ARRIVALS = PRODUCTS.filter(p => p.isNew);
 
 export function NewArrivals() {
     return (

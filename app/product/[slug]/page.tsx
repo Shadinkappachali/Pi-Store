@@ -25,61 +25,65 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { ProductCard } from "@/components/ui/product-card";
 import { Container } from "@/components/ui/container";
-
-// Mock Product Data
-const PRODUCT = {
-    id: "1",
-    name: "HyperCharge 65W GaN Fast Charger (Triple Port)",
-    price: 2499,
-    originalPrice: 3999,
-    rating: 4.9,
-    reviewsCount: 1250,
-    category: "Chargers",
-    brand: "Pi Store",
-    stockStatus: "In Stock",
-    description: "Experience lightning-fast charging with our 65W GaN Fast Charger. Designed for portability and efficiency, this charger features three ports (2x USB-C, 1x USB-A) to power your laptop, phone, and accessories simultaneously.",
-    highlights: [
-        "65W Max Output - Fast charges MacBooks & iPhones",
-        "GaN Technology - Smaller size, less heat",
-        "Triple Port Design - Charge 3 devices at once",
-        "Universal Compatibility - Works with Type-C & lightning devices",
-        "Certified Safety - Overcurrent & overheat protection"
-    ],
-    specs: [
-        { label: "Input", value: "100-240V, 50/60Hz, 1.5A" },
-        { label: "Output C1/C2", value: "65W Max" },
-        { label: "Output C1+C2", value: "45W + 20W" },
-        { label: "Weight", value: "95g" },
-        { label: "Color", value: "Matte Black / Arctic White" }
-    ],
-    variants: [
-        { id: "v1", name: "Matte Black", color: "#111827" },
-        { id: "v2", name: "Arctic White", color: "#F9FAFB" }
-    ],
-    images: [
-        "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?q=80&w=800&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1616422285623-13ff0167c95c?q=80&w=800&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=800&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=800&auto=format&fit=crop"
-    ]
-};
-
-const RELATED_PRODUCTS = [
-    { id: "4", name: "DuraLink Pro USB-C Cable", price: 799, originalPrice: 1299, rating: 4.9, reviews: 2100, category: "Cables", image: "https://images.unsplash.com/photo-1625805721666-3be3d4d3c3cc?q=80&w=800&auto=format&fit=crop" },
-    { id: "2", name: "SonicSync Pro Earbuds", price: 1899, originalPrice: 2999, rating: 4.8, reviews: 840, category: "Earphones", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=800&auto=format&fit=crop" },
-    { id: "6", name: "PowerVault 20000mAh", price: 2999, originalPrice: 4499, rating: 4.6, reviews: 450, category: "Power Banks", image: "https://images.unsplash.com/photo-1625752321528-9820f121df0d?q=80&w=800&auto=format&fit=crop" },
-    { id: "8", name: "NanoHub 7-in-1 Adapter", price: 3299, originalPrice: 4999, rating: 4.9, reviews: 45, category: "USB Hubs", image: "https://images.unsplash.com/photo-1616422285623-13ff0167c95c?q=80&w=800&auto=format&fit=crop" },
-];
+import { PRODUCTS } from "@/constants/products";
 
 export default function ProductDetailPage() {
     const { addToCart } = useCart();
     const router = useRouter();
     const params = useParams();
+    const slug = params.slug as string;
+
+    const currentProduct = PRODUCTS.find(p => p.id === slug);
+
+    const relatedProducts = useMemo(() => {
+        if (!currentProduct) return [];
+        return PRODUCTS
+            .filter(p => p.category === currentProduct.category && p.id !== currentProduct.id)
+            .slice(0, 4);
+    }, [currentProduct]);
+
+    const PRODUCT_DISPLAY = useMemo(() => {
+        if (!currentProduct) return null;
+        return {
+            ...currentProduct,
+            reviewsCount: currentProduct.reviews,
+            stockStatus: currentProduct.available ? "In Stock" : "Out of Stock",
+            description: `Experience the best of ${currentProduct.brand} with the ${currentProduct.name}. Designed for high performance and premium feel, this ${currentProduct.category} product is perfect for modern tech enthusiasts.`,
+            highlights: [
+                "Premium Build Quality",
+                "Advanced Technology",
+                "Ergonomic Design",
+                "1 Year Warranty"
+            ],
+            specs: [
+                { label: "Category", value: currentProduct.category },
+                { label: "Brand", value: currentProduct.brand },
+                { label: "Price", value: formatINR(currentProduct.price) }
+            ],
+            variants: [
+                { id: "v1", name: "Standard", color: "#111827" }
+            ],
+            images: [
+                currentProduct.image,
+                "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?q=80&w=800&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1616422285623-13ff0167c95c?q=80&w=800&auto=format&fit=crop"
+            ]
+        };
+    }, [currentProduct]);
+
     const [activeImage, setActiveImage] = useState(0);
-    const [selectedVariant, setSelectedVariant] = useState(PRODUCT.variants[0].id);
     const [quantity, setQuantity] = useState(1);
     const [pincode, setPincode] = useState("");
     const [pincodeStatus, setPincodeStatus] = useState<"idle" | "checking" | "available" | "error">("idle");
+
+    if (!PRODUCT_DISPLAY) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh]">
+                <h2 className="text-2xl font-bold">Product not found</h2>
+                <Button className="mt-4" asChild><Link href="/shop">Back to Shop</Link></Button>
+            </div>
+        );
+    }
 
     const checkPincode = (e: React.FormEvent) => {
         e.preventDefault();
@@ -92,11 +96,11 @@ export default function ProductDetailPage() {
 
     const handleAddToCart = () => {
         addToCart({
-            id: PRODUCT.id,
-            name: PRODUCT.name,
-            price: PRODUCT.price,
-            image: "", // Placeholder
-            category: PRODUCT.category,
+            id: PRODUCT_DISPLAY.id,
+            name: PRODUCT_DISPLAY.name,
+            price: PRODUCT_DISPLAY.price,
+            image: PRODUCT_DISPLAY.image,
+            category: PRODUCT_DISPLAY.category,
             quantity: quantity
         });
     };
@@ -112,10 +116,10 @@ export default function ProductDetailPage() {
                 {/* Breadcrumbs */}
                 <nav className="mb-8 flex items-center gap-2 text-xs font-medium text-gray-500 uppercase tracking-widest">
                     <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-                    <ChevronRight size={12} />
+                    <span className="text-gray-300">/</span>
                     <Link href="/shop" className="hover:text-primary transition-colors">Shop</Link>
-                    <ChevronRight size={12} />
-                    <span className="text-secondary">{PRODUCT.name}</span>
+                    <span className="text-gray-300">/</span>
+                    <span className="text-secondary">{PRODUCT_DISPLAY.name}</span>
                 </nav>
 
                 <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
@@ -123,8 +127,8 @@ export default function ProductDetailPage() {
                     <div className="space-y-4">
                         <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 border border-border group">
                             <img
-                                src={PRODUCT.images[activeImage]}
-                                alt={PRODUCT.name}
+                                src={PRODUCT_DISPLAY.images[activeImage]}
+                                alt={PRODUCT_DISPLAY.name}
                                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
                             <button className="absolute right-4 top-4 rounded-full bg-white/80 p-2 text-secondary shadow-sm backdrop-blur hover:bg-white transition-all">
@@ -132,16 +136,16 @@ export default function ProductDetailPage() {
                             </button>
                         </div>
 
-                        <div className="flex gap-4">
-                            {PRODUCT.images.map((img, idx) => (
+                        <div className="flex gap-4 overflow-x-auto pb-2">
+                            {PRODUCT_DISPLAY.images.map((img, idx) => (
                                 <button
                                     key={idx}
                                     onClick={() => setActiveImage(idx)}
-                                    className={`relative aspect-square w-20 overflow-hidden rounded-lg border-2 bg-gray-50 transition-all ${activeImage === idx ? 'border-primary' : 'border-transparent hover:border-gray-200'}`}
+                                    className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-lg border-2 bg-gray-50 transition-all ${activeImage === idx ? 'border-primary' : 'border-transparent hover:border-gray-200'}`}
                                 >
                                     <img
                                         src={img}
-                                        alt={`${PRODUCT.name} thumbnail ${idx + 1}`}
+                                        alt={`${PRODUCT_DISPLAY.name} thumbnail ${idx + 1}`}
                                         className="h-full w-full object-cover"
                                     />
                                 </button>
@@ -152,7 +156,7 @@ export default function ProductDetailPage() {
                     {/* Right: Product Info */}
                     <div className="flex flex-col">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm font-bold uppercase tracking-widest text-primary">{PRODUCT.brand}</span>
+                            <span className="text-sm font-bold uppercase tracking-widest text-primary">{PRODUCT_DISPLAY.brand}</span>
                             <div className="flex gap-2">
                                 <Button variant="ghost" size="icon" className="rounded-full border border-border">
                                     <Share2 size={18} />
@@ -163,50 +167,31 @@ export default function ProductDetailPage() {
                             </div>
                         </div>
 
-                        <h1 className="mt-4 text-3xl font-extrabold text-secondary lg:text-4xl">{PRODUCT.name}</h1>
+                        <h1 className="mt-4 text-3xl font-extrabold text-secondary lg:text-4xl">{PRODUCT_DISPLAY.name}</h1>
 
                         {/* Rating */}
                         <div className="mt-4 flex items-center gap-3">
                             <div className="flex items-center text-amber-400">
                                 {[...Array(5)].map((_, i) => (
-                                    <Star key={i} className={cn("h-4 w-4 fill-current", i < Math.floor(PRODUCT.rating) ? "text-amber-400" : "text-gray-200")} />
+                                    <Star key={i} className={cn("h-4 w-4 fill-current", i < Math.floor(PRODUCT_DISPLAY.rating) ? "text-amber-400" : "text-gray-200")} />
                                 ))}
                             </div>
-                            <span className="text-sm font-bold text-secondary">{PRODUCT.rating}</span>
+                            <span className="text-sm font-bold text-secondary">{PRODUCT_DISPLAY.rating}</span>
                             <span className="h-4 w-px bg-border" />
-                            <span className="text-sm text-gray-500 font-medium">{PRODUCT.reviewsCount} Reviews</span>
+                            <span className="text-sm text-gray-500 font-medium">{PRODUCT_DISPLAY.reviewsCount} Reviews</span>
                         </div>
 
                         {/* Price */}
                         <div className="mt-8 flex items-end gap-3">
-                            <span className="text-4xl font-extrabold text-secondary">{formatINR(PRODUCT.price)}</span>
-                            <span className="text-xl text-gray-400 line-through">{formatINR(PRODUCT.originalPrice)}</span>
-                            <span className="mb-1 rounded-md bg-green-100 px-2 py-0.5 text-xs font-bold text-green-600">
-                                Save {Math.round(((PRODUCT.originalPrice - PRODUCT.price) / PRODUCT.originalPrice) * 100)}%
-                            </span>
-                        </div>
-
-                        {/* Variants */}
-                        <div className="mt-10">
-                            <span className="text-sm font-extrabold uppercase tracking-widest text-secondary">Choose Color</span>
-                            <div className="mt-4 flex gap-3">
-                                {PRODUCT.variants.map((v) => (
-                                    <button
-                                        key={v.id}
-                                        onClick={() => setSelectedVariant(v.id)}
-                                        className={`group relative flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all ${selectedVariant === v.id ? 'border-primary' : 'border-transparent'}`}
-                                        title={v.name}
-                                    >
-                                        <div
-                                            className="h-7 w-7 rounded-full border border-border"
-                                            style={{ backgroundColor: v.color }}
-                                        />
-                                        {selectedVariant === v.id && (
-                                            <CheckCircle2 className="absolute -right-1 -top-1 h-4 w-4 fill-primary text-white" />
-                                        )}
-                                    </button>
-                                ))}
-                            </div>
+                            <span className="text-4xl font-extrabold text-secondary">{formatINR(PRODUCT_DISPLAY.price)}</span>
+                            {PRODUCT_DISPLAY.originalPrice && (
+                                <>
+                                    <span className="text-xl text-gray-400 line-through">{formatINR(PRODUCT_DISPLAY.originalPrice)}</span>
+                                    <span className="mb-1 rounded-md bg-green-100 px-2 py-0.5 text-xs font-bold text-green-600">
+                                        Save {Math.round(((PRODUCT_DISPLAY.originalPrice - PRODUCT_DISPLAY.price) / PRODUCT_DISPLAY.originalPrice) * 100)}%
+                                    </span>
+                                </>
+                            )}
                         </div>
 
                         {/* Quantity */}
@@ -226,13 +211,19 @@ export default function ProductDetailPage() {
                                     <Plus size={16} />
                                 </button>
                             </div>
-                            <span className="text-sm font-bold text-green-600">{PRODUCT.stockStatus}</span>
+                            <span className={cn("text-sm font-bold", PRODUCT_DISPLAY.available ? "text-green-600" : "text-rose-500")}>
+                                {PRODUCT_DISPLAY.stockStatus}
+                            </span>
                         </div>
 
                         {/* Action Buttons */}
                         <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            <Button className="h-14 bg-primary text-lg font-bold" onClick={handleAddToCart}>Add to Cart</Button>
-                            <Button variant="secondary" className="h-14 text-lg font-bold" onClick={handleBuyNow}>Buy it Now</Button>
+                            <Button className="h-14 bg-primary text-lg font-bold" onClick={handleAddToCart} disabled={!PRODUCT_DISPLAY.available}>
+                                Add to Cart
+                            </Button>
+                            <Button variant="secondary" className="h-14 text-lg font-bold" onClick={handleBuyNow} disabled={!PRODUCT_DISPLAY.available}>
+                                Buy it Now
+                            </Button>
                         </div>
 
                         {/* Pincode Checker */}
@@ -269,7 +260,7 @@ export default function ProductDetailPage() {
                         <div className="mt-12 space-y-4 border-t border-border pt-8">
                             <h3 className="text-sm font-bold uppercase tracking-widest text-secondary">Highlights</h3>
                             <ul className="space-y-3">
-                                {PRODUCT.highlights.map((h, i) => (
+                                {PRODUCT_DISPLAY.highlights.map((h, i) => (
                                     <li key={i} className="flex items-start gap-3 text-sm text-gray-500">
                                         <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                                         <span>{h}</span>
@@ -280,14 +271,14 @@ export default function ProductDetailPage() {
                     </div>
                 </div>
 
-                {/* Tabs: Specs & Reviews */}
+                {/* Tabs: Specs */}
                 <div className="mt-24 border-t border-border pt-16">
                     <div className="grid grid-cols-1 gap-16 lg:grid-cols-3">
                         {/* Specs */}
                         <div className="lg:col-span-1 space-y-8">
                             <h3 className="text-xl font-extrabold text-secondary">Specifications</h3>
                             <div className="space-y-4">
-                                {PRODUCT.specs.map((s) => (
+                                {PRODUCT_DISPLAY.specs.map((s) => (
                                     <div key={s.label} className="flex justify-between border-b border-border pb-2 text-sm">
                                         <span className="font-medium text-gray-400">{s.label}</span>
                                         <span className="font-bold text-secondary">{s.value}</span>
@@ -295,7 +286,6 @@ export default function ProductDetailPage() {
                                 ))}
                             </div>
 
-                            {/* Trust Badges Minimal */}
                             <div className="space-y-4 rounded-xl bg-primary/5 p-6 mt-12">
                                 <div className="flex items-center gap-3">
                                     <ShieldCheck className="text-primary" size={20} />
@@ -308,18 +298,17 @@ export default function ProductDetailPage() {
                             </div>
                         </div>
 
-                        {/* Reviews & QA */}
+                        {/* Reviews */}
                         <div className="lg:col-span-2 space-y-12">
                             <div className="flex items-center justify-between pb-6 border-b border-border">
                                 <h3 className="text-2xl font-extrabold text-secondary flex items-center gap-2">
                                     Customer Reviews
-                                    <span className="text-sm font-medium text-gray-400">({PRODUCT.reviewsCount})</span>
+                                    <span className="text-sm font-medium text-gray-400">({PRODUCT_DISPLAY.reviewsCount})</span>
                                 </h3>
                                 <Button variant="outline" className="font-bold">Write a Review</Button>
                             </div>
 
                             <div className="space-y-8">
-                                {/* Mock Reviews */}
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center gap-3">
@@ -333,53 +322,31 @@ export default function ProductDetailPage() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <span className="text-xs text-gray-400">2 days ago</span>
+                                        <span className="text-xs text-gray-400">Verified Purchase</span>
                                     </div>
                                     <p className="text-sm leading-relaxed text-gray-500">
-                                        Absolutely amazing! The charging speed is unreal. Mac and iPhone charge simultaneously without any heat issues. Best charger at this price point for students.
+                                        Excellent product. Exceeded my expectations in terms of build quality and performance. Highly recommended!
                                     </p>
                                 </div>
-
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 font-bold text-secondary">AN</div>
-                                            <div>
-                                                <p className="text-sm font-bold text-secondary">Ananya N.</p>
-                                                <div className="flex items-center text-amber-400">
-                                                    {[...Array(5)].map((_, i) => (
-                                                        <Star key={i} className="h-3 w-3 fill-current" />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <span className="text-xs text-gray-400">1 week ago</span>
-                                    </div>
-                                    <p className="text-sm leading-relaxed text-gray-500">
-                                        Compact and sturdy. The Arctic White looks so premium. It easily fits in my bag. Using it for 3 months now, no issues.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex justify-center pt-8 border-t border-border">
-                                <Button variant="ghost" className="font-bold text-primary">View All Reviews</Button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 {/* Related Products */}
-                <div className="mt-32">
-                    <div className="mb-10 flex items-center justify-between">
-                        <h3 className="text-3xl font-extrabold text-secondary">You Might Also Like</h3>
-                        <Link href="/shop" className="text-sm font-bold text-primary hover:underline">View All Products</Link>
+                {relatedProducts.length > 0 && (
+                    <div className="mt-32">
+                        <div className="mb-10 flex items-center justify-between">
+                            <h3 className="text-3xl font-extrabold text-secondary">You Might Also Like</h3>
+                            <Link href="/shop" className="text-sm font-bold text-primary hover:underline">View All Products</Link>
+                        </div>
+                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                            {relatedProducts.map((p) => (
+                                <ProductCard key={p.id} {...p} />
+                            ))}
+                        </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                        {RELATED_PRODUCTS.map((p) => (
-                            <ProductCard key={p.id} {...p} />
-                        ))}
-                    </div>
-                </div>
+                )}
             </Container>
         </div>
     );

@@ -6,14 +6,14 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 const categories = [
-    { name: "Chargers", icon: Battery, color: "bg-blue-50 text-blue-600", href: "/category/chargers" },
-    { name: "Cables", icon: Cable, color: "bg-orange-50 text-orange-600", href: "/category/cables" },
-    { name: "Earphones", icon: Headphones, color: "bg-purple-50 text-purple-600", href: "/category/earphones" },
-    { name: "Bluetooth", icon: Watch, color: "bg-cyan-50 text-cyan-600", href: "/category/bluetooth" },
-    { name: "Keyboards", icon: Laptop, color: "bg-emerald-50 text-emerald-600", href: "/category/keyboards" },
+    { name: "Mobiles", icon: Smartphone, color: "bg-blue-50 text-blue-600", href: "/category/mobile" },
+    { name: "Laptops", icon: Laptop, color: "bg-emerald-50 text-emerald-600", href: "/category/laptop" },
+    { name: "Chargers", icon: Battery, color: "bg-orange-50 text-orange-600", href: "/category/chargers" },
+    { name: "Cables", icon: Cable, color: "bg-purple-50 text-purple-600", href: "/category/cables" },
+    { name: "Earphones", icon: Headphones, color: "bg-cyan-50 text-cyan-600", href: "/category/earphones" },
+    { name: "Keyboards", icon: Laptop, color: "bg-indigo-50 text-indigo-600", href: "/category/keyboards" },
     { name: "Mouse", icon: Mouse, color: "bg-rose-50 text-rose-600", href: "/category/mouse" },
-    { name: "USB Hubs", icon: Smartphone, color: "bg-indigo-50 text-indigo-600", href: "/category/hubs" },
-    { name: "Storage", icon: HardDrive, color: "bg-amber-50 text-amber-600", href: "/category/storage" },
+    { name: "USB Hubs", icon: Smartphone, color: "bg-amber-50 text-amber-600", href: "/category/hubs" },
 ];
 
 export function CategoriesGrid() {

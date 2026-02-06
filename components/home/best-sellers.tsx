@@ -6,59 +6,9 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 
-const BEST_SELLERS = [
-    {
-        id: "1",
-        name: "HyperCharge 65W GaN Fast Charger (Triple Port)",
-        price: 2499,
-        originalPrice: 3999,
-        rating: 4.9,
-        reviews: 1250,
-        category: "Chargers",
-        badge: "Best Seller",
-        image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        id: "2",
-        name: "SonicSync Pro Wireless Noise Cancelling Earbuds",
-        price: 1899,
-        originalPrice: 2999,
-        rating: 4.8,
-        reviews: 840,
-        category: "Earphones",
-        image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        id: "3",
-        name: "PrecisionTrack Wireless Ergo Mouse",
-        price: 1299,
-        originalPrice: 1999,
-        rating: 4.7,
-        reviews: 620,
-        category: "Mouse",
-        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        id: "4",
-        name: "DuraLink Pro USB-C to Lightning Cable (1.5m)",
-        price: 799,
-        originalPrice: 1299,
-        rating: 4.9,
-        reviews: 2100,
-        category: "Cables",
-        image: "https://images.unsplash.com/photo-1625805721666-3be3d4d3c3cc?q=80&w=800&auto=format&fit=crop"
-    },
-    {
-        id: "5",
-        name: "GhostType Mechanical Silent Keyboard",
-        price: 4499,
-        originalPrice: 5999,
-        rating: 4.8,
-        reviews: 310,
-        category: "Keyboards",
-        image: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?q=80&w=800&auto=format&fit=crop"
-    }
-];
+import { PRODUCTS } from "@/constants/products";
+
+const BEST_SELLERS = PRODUCTS.filter(p => p.isBestSeller);
 
 export function BestSellers() {
     const scrollRef = useRef<HTMLDivElement>(null);
