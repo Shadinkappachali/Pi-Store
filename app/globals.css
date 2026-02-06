@@ -2,9 +2,12 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #111827; /* Charcoal */
-  --primary: #2563EB; /* Electric Blue */
-  --secondary: #111827; /* Charcoal */
+  --foreground: #111827;
+  /* Charcoal */
+  --primary: #2563EB;
+  /* Electric Blue */
+  --secondary: #111827;
+  /* Charcoal */
   --muted: #f3f4f6;
   --border: #e5e7eb;
 }
@@ -16,7 +19,7 @@
   --color-secondary: var(--secondary);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  
+
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
@@ -27,6 +30,22 @@ body {
   font-family: var(--font-sans);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

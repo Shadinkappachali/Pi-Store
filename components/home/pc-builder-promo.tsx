@@ -78,10 +78,6 @@ export function PCBuilderPromo() {
                                 <div className="h-full w-full rounded-2xl border border-white/5 bg-black/40 p-8 flex flex-col justify-between">
                                     <div className="space-y-6">
                                         <div className="h-1 w-24 bg-primary rounded-full" />
-                                        <div className="space-y-2">
-                                            <div className="h-4 w-full bg-white/10 rounded-lg animate-pulse" />
-                                            <div className="h-4 w-3/4 bg-white/10 rounded-lg animate-pulse" />
-                                        </div>
                                     </div>
 
                                     <div className="flex items-end justify-between">
