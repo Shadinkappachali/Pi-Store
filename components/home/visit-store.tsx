@@ -32,8 +32,8 @@ export function VisitStore() {
                                 </div>
                                 <div>
                                     <p className="text-sm font-bold uppercase tracking-widest text-gray-400">Location</p>
-                                    <p className="mt-1 font-bold text-secondary text-lg">1668A, 14th Main Rd, Sector 7</p>
-                                    <p className="text-gray-500">HSR Layout, Bengaluru, Karnataka 560102</p>
+                                    <p className="mt-1 font-bold text-secondary text-lg">Canoliz Tower, Near Panchayat Office</p>
+                                    <p className="text-gray-500">Mampad, Malappuram, Kerala 676542</p>
                                 </div>
                             </div>
 
@@ -68,7 +68,7 @@ export function VisitStore() {
                         className="relative aspect-square lg:aspect-video overflow-hidden rounded-[2.5rem] border border-border shadow-2xl"
                     >
                         <iframe
-                            src="https://maps.google.com/maps?q=1668A,%2014th%20Main%20Rd,%20Sector%207,%20HSR%20Layout,%20Bengaluru,%20Karnataka,%20560102&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            src="https://maps.google.com/maps?q=11.2449075,76.1812139&t=&z=15&ie=UTF8&iwloc=&output=embed"
                             width="100%"
                             height="100%"
                             style={{ border: 0 }}

@@ -51,19 +51,19 @@ export function Footer() {
                         <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-secondary">Contact Us</h3>
                         <div className="flex items-start gap-3">
                             <MapPin className="h-5 w-5 shrink-0 text-primary" />
-                            <p>Pi Store HQ, 1st Floor, Innovation Hub, Bangalore, India - 560001</p>
+                            <p>Canoliz Tower, Near Panchayat Office, Mampad, Kerala - 676542</p>
                         </div>
                         <div className="flex items-center gap-3">
                             <Phone className="h-5 w-5 shrink-0 text-primary" />
-                            <p>+91 98765 43210</p>
+                            <p>+91 96568 20000</p>
                         </div>
                         <div className="flex items-center gap-3">
                             <Mail className="h-5 w-5 shrink-0 text-primary" />
-                            <p>support@pistore.in</p>
+                            <p>contact@pibots.in</p>
                         </div>
                         <div className="pt-2">
                             <Link
-                                href="https://wa.me/919876543210"
+                                href="https://wa.me/919656820000"
                                 target="_blank"
                                 className="flex items-center gap-2 font-medium text-green-600 hover:text-green-700"
                             >

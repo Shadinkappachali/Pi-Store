@@ -19,9 +19,9 @@ export default function ContactPage() {
     };
 
     const contactInfo = [
-        { icon: Phone, title: "Phone", details: "+91 98765 43210", sub: "Mon-Sat, 10am-7pm" },
-        { icon: Mail, title: "Email", details: "support@pistore.com", sub: "Response within 24h" },
-        { icon: MapPin, title: "Address", details: "1668A, 14th Main Rd, Sector 7", sub: "HSR Layout, Bengaluru, 560102" },
+        { icon: Phone, title: "Phone", details: "+91 96568 20000", sub: "Mon-Sat, 10am-7pm" },
+        { icon: Mail, title: "Email", details: "contact@pibots.in", sub: "Response within 24h" },
+        { icon: MapPin, title: "Address", details: "Canoliz Tower, Near Panchayat Office", sub: "Mampad, Malappuram, Kerala 676542" },
         { icon: MessageCircle, title: "WhatsApp", details: "Direct Chat", sub: "Recommended for fast help" }
     ];
 
@@ -158,7 +158,7 @@ export default function ContactPage() {
                     >
                         <div className="aspect-[21/9] w-full bg-gray-100">
                             <iframe
-                                src="https://maps.google.com/maps?q=1668A,%2014th%20Main%20Rd,%20Sector%207,%20HSR%20Layout,%20Bengaluru,%20Karnataka,%20560102&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                                src="https://maps.google.com/maps?q=11.2449075,76.1812139&t=&z=15&ie=UTF8&iwloc=&output=embed"
                                 width="100%"
                                 height="100%"
                                 style={{ border: 0 }}
