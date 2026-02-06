@@ -98,29 +98,35 @@ export default function CheckoutPage() {
                                             className="space-y-6 rounded-3xl border border-border bg-white p-8"
                                         >
                                             <h2 className="text-2xl font-bold text-secondary">Shipping Address</h2>
-                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                            <form
+                                                className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+                                                onSubmit={(e) => {
+                                                    e.preventDefault();
+                                                    handleNext();
+                                                }}
+                                            >
                                                 <div className="space-y-2">
                                                     <label className="text-xs font-bold uppercase text-gray-400">Full Name</label>
-                                                    <Input placeholder="John Doe" />
+                                                    <Input placeholder="John Doe" required />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-xs font-bold uppercase text-gray-400">Email Address</label>
-                                                    <Input type="email" placeholder="john@example.com" />
+                                                    <Input type="email" placeholder="john@example.com" required />
                                                 </div>
                                                 <div className="sm:col-span-2 space-y-2">
                                                     <label className="text-xs font-bold uppercase text-gray-400">Street Address</label>
-                                                    <Input placeholder="Flat, House no., Building, Company, Apartment" />
+                                                    <Input placeholder="Flat, House no., Building, Company, Apartment" required />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-xs font-bold uppercase text-gray-400">City</label>
-                                                    <Input placeholder="Bangalore" />
+                                                    <Input placeholder="Bangalore" required />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-xs font-bold uppercase text-gray-400">Pincode</label>
-                                                    <Input placeholder="560001" maxLength={6} />
+                                                    <Input placeholder="560001" maxLength={6} required />
                                                 </div>
-                                            </div>
-                                            <Button className="h-14 w-full text-lg font-bold" onClick={handleNext}>Continue to Shipping</Button>
+                                                <Button type="submit" className="h-14 w-full text-lg font-bold sm:col-span-2 mt-4">Continue to Shipping</Button>
+                                            </form>
                                         </motion.div>
                                     )}
 

@@ -21,7 +21,7 @@ export default function ContactPage() {
     const contactInfo = [
         { icon: Phone, title: "Phone", details: "+91 98765 43210", sub: "Mon-Sat, 10am-7pm" },
         { icon: Mail, title: "Email", details: "support@pistore.com", sub: "Response within 24h" },
-        { icon: MapPin, title: "Address", details: "HSR Layout, Bangalore", sub: "Karnataka, India 560102" },
+        { icon: MapPin, title: "Address", details: "1668A, 14th Main Rd, Sector 7", sub: "HSR Layout, Bengaluru, 560102" },
         { icon: MessageCircle, title: "WhatsApp", details: "Direct Chat", sub: "Recommended for fast help" }
     ];
 
@@ -148,6 +148,26 @@ export default function ContactPage() {
                             </div>
                         </div>
                     </div>
+
+                    {/* Google Map Section */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="mt-16 overflow-hidden rounded-[2.5rem] border border-border bg-white shadow-sm"
+                    >
+                        <div className="aspect-[21/9] w-full bg-gray-100">
+                            <iframe
+                                src="https://maps.google.com/maps?q=1668A,%2014th%20Main%20Rd,%20Sector%207,%20HSR%20Layout,%20Bengaluru,%20Karnataka,%20560102&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                            ></iframe>
+                        </div>
+                    </motion.div>
                 </div>
             </Container>
         </div>
