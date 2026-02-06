@@ -122,9 +122,11 @@ export default function ProductDetailPage() {
                     {/* Left: Image Gallery */}
                     <div className="space-y-4">
                         <div className="relative aspect-square overflow-hidden rounded-2xl bg-gray-50 border border-border group">
-                            <div className="flex h-full w-full items-center justify-center text-sm font-medium text-gray-300 uppercase tracking-[0.2em]">
-                                Product Image {activeImage + 1}
-                            </div>
+                            <img
+                                src={PRODUCT.images[activeImage]}
+                                alt={PRODUCT.name}
+                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            />
                             <button className="absolute right-4 top-4 rounded-full bg-white/80 p-2 text-secondary shadow-sm backdrop-blur hover:bg-white transition-all">
                                 <Maximize2 size={20} />
                             </button>
@@ -137,9 +139,11 @@ export default function ProductDetailPage() {
                                     onClick={() => setActiveImage(idx)}
                                     className={`relative aspect-square w-20 overflow-hidden rounded-lg border-2 bg-gray-50 transition-all ${activeImage === idx ? 'border-primary' : 'border-transparent hover:border-gray-200'}`}
                                 >
-                                    <div className="flex h-full w-full items-center justify-center text-[8px] text-gray-400 font-bold uppercase">
-                                        Slot {idx + 1}
-                                    </div>
+                                    <img
+                                        src={img}
+                                        alt={`${PRODUCT.name} thumbnail ${idx + 1}`}
+                                        className="h-full w-full object-cover"
+                                    />
                                 </button>
                             ))}
                         </div>

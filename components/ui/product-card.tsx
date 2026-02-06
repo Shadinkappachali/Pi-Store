@@ -38,9 +38,17 @@ export function ProductCard({ id, name, price, originalPrice, rating, reviews, i
 
             {/* Image Placeholder */}
             <Link href={`/product/${id}`} className="relative aspect-square overflow-hidden bg-gray-100">
-                <div className="flex h-full w-full items-center justify-center text-[10px] font-medium text-gray-300 uppercase tracking-widest transition-transform group-hover:scale-110">
-                    {category} Product
-                </div>
+                {image ? (
+                    <img
+                        src={image}
+                        alt={name}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                ) : (
+                    <div className="flex h-full w-full items-center justify-center text-[10px] font-medium text-gray-300 uppercase tracking-widest transition-transform group-hover:scale-110">
+                        {category} Product
+                    </div>
+                )}
                 <Button
                     variant="ghost"
                     size="icon"
