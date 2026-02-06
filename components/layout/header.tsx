@@ -34,6 +34,9 @@ export function Header() {
                         <Link href="/shop" className="text-sm font-medium hover:text-primary transition-colors">
                             Store
                         </Link>
+                        <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
+                            Contact
+                        </Link>
                     </nav>
 
                     {/* Search Bar - Desktop */}
@@ -95,6 +98,7 @@ export function Header() {
                         <Link href="/category/mobile" className="text-lg font-medium">Mobile Accessories</Link>
                         <Link href="/category/laptop" className="text-lg font-medium">Laptop Accessories</Link>
                         <Link href="/shop" className="text-lg font-medium">All Products</Link>
+                        <Link href="/contact" className="text-lg font-medium">Contact Us</Link>
                         <Link href="/account" className="text-lg font-medium">My Account</Link>
                     </nav>
                 </div>

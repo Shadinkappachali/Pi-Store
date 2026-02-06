@@ -4,6 +4,7 @@ import { BestSellers } from "@/components/home/best-sellers";
 import { NewArrivals } from "@/components/home/new-arrivals";
 import { DealsCountdown } from "@/components/home/deals-countdown";
 import { TrustBadges } from "@/components/home/trust-badges";
+import { VisitStore } from "@/components/home/visit-store";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <BestSellers />
       <NewArrivals />
       <DealsCountdown />
+      <VisitStore />
       <TrustBadges />
     </div>
   );
