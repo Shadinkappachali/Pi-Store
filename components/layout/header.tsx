@@ -37,6 +37,9 @@ export function Header() {
                         <Link href="/pc-builder" className="text-sm font-medium hover:text-primary transition-colors">
                             PC Builder
                         </Link>
+                        <Link href="/pc-builds" className="text-sm font-medium hover:text-primary transition-colors">
+                            Pre-built PCs
+                        </Link>
                         <Link href="/contact" className="text-sm font-medium hover:text-primary transition-colors">
                             Contact
                         </Link>
@@ -102,6 +105,7 @@ export function Header() {
                         <Link href="/category/laptop" className="text-lg font-medium">Laptop Accessories</Link>
                         <Link href="/shop" className="text-lg font-medium">All Products</Link>
                         <Link href="/pc-builder" className="text-lg font-medium">PC Builder</Link>
+                        <Link href="/pc-builds" className="text-lg font-medium">Pre-built PCs</Link>
                         <Link href="/contact" className="text-lg font-medium">Contact Us</Link>
                         <Link href="/account" className="text-lg font-medium">My Account</Link>
                     </nav>

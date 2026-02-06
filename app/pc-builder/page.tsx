@@ -1,12 +1,13 @@
 "use client";
 
 import { Container } from "@/components/ui/container";
-import { useState } from "react";
-import { PC_COMPONENTS, ComponentCategory, PCComponent } from "@/constants/pc-components";
+import { useState, useEffect, Suspense } from "react";
+import { PC_COMPONENTS, ComponentCategory, PCComponent, PREBUILT_CONFIGS } from "@/constants/pc-components";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Cpu, Monitor, HardDrive, Zap, Wind, Square, Layout, CheckCircle2, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useSearchParams } from "next/navigation";
 
 const categories: { key: ComponentCategory; icon: any; label: string }[] = [
     { key: "CPU", icon: Cpu, label: "Processor" },
@@ -19,9 +20,28 @@ const categories: { key: ComponentCategory; icon: any; label: string }[] = [
     { key: "Cabinet", icon: Layout, label: "Case" },
 ];
 
-export default function PCBuilderPage() {
+function PCBuilderContent() {
+    const searchParams = useSearchParams();
+    const presetId = searchParams.get("preset");
+
     const [selectedCategory, setSelectedCategory] = useState<ComponentCategory>("CPU");
     const [selections, setSelections] = useState<Partial<Record<ComponentCategory, PCComponent>>>({});
+
+    useEffect(() => {
+        if (presetId) {
+            const preset = PREBUILT_CONFIGS.find(p => p.id === presetId);
+            if (preset) {
+                const newSelections: Partial<Record<ComponentCategory, PCComponent>> = {};
+                Object.entries(preset.components).forEach(([cat, id]) => {
+                    const component = PC_COMPONENTS[cat as ComponentCategory].find(c => c.id === id);
+                    if (component) {
+                        newSelections[cat as ComponentCategory] = component;
+                    }
+                });
+                setSelections(newSelections);
+            }
+        }
+    }, [presetId]);
 
     const handleSelect = (category: ComponentCategory, component: PCComponent) => {
         setSelections(prev => ({ ...prev, [category]: component }));
@@ -193,5 +213,13 @@ export default function PCBuilderPage() {
                 </div>
             </Container>
         </div>
+    );
+}
+
+export default function PCBuilderPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading Builder...</div>}>
+            <PCBuilderContent />
+        </Suspense>
     );
 }
