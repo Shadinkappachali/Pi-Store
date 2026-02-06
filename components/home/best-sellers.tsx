@@ -16,7 +16,7 @@ const BEST_SELLERS = [
         reviews: 1250,
         category: "Chargers",
         badge: "Best Seller",
-        image: ""
+        image: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: "2",
@@ -26,7 +26,7 @@ const BEST_SELLERS = [
         rating: 4.8,
         reviews: 840,
         category: "Earphones",
-        image: ""
+        image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: "3",
@@ -36,7 +36,7 @@ const BEST_SELLERS = [
         rating: 4.7,
         reviews: 620,
         category: "Mouse",
-        image: ""
+        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: "4",
@@ -46,7 +46,7 @@ const BEST_SELLERS = [
         rating: 4.9,
         reviews: 2100,
         category: "Cables",
-        image: ""
+        image: "https://images.unsplash.com/photo-1625805721666-3be3d4d3c3cc?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: "5",
@@ -56,7 +56,7 @@ const BEST_SELLERS = [
         rating: 4.8,
         reviews: 310,
         category: "Keyboards",
-        image: ""
+        image: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?q=80&w=800&auto=format&fit=crop"
     }
 ];
 

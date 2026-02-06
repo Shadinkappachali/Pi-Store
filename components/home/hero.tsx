@@ -66,15 +66,14 @@ export function Hero() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="relative h-[450px] w-full rounded-2xl bg-gray-50 flex items-center justify-center border border-border overflow-hidden lg:h-[600px]"
                     >
-                        {/* Using a placeholder for now, generic icons/shapes to make it look premium */}
-                        <div className="grid grid-cols-2 gap-8 opacity-20">
-                            <div className="h-32 w-32 rounded-lg bg-primary" />
-                            <div className="h-32 w-32 rounded-lg bg-secondary" />
-                            <div className="h-32 w-32 rounded-lg bg-secondary" />
-                            <div className="h-32 w-32 rounded-lg bg-primary" />
-                        </div>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <p className="text-sm font-medium text-gray-300 uppercase tracking-widest">Premium Tech Collection</p>
+                        <img
+                            src="https://images.unsplash.com/photo-1491933382434-50028619b5da?q=80&w=1200&auto=format&fit=crop"
+                            alt="Premium Tech Collection"
+                            className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent" />
+                        <div className="absolute bottom-6 left-6 rounded-lg bg-white/10 backdrop-blur-md px-4 py-2 border border-white/20">
+                            <p className="text-xs font-medium text-white uppercase tracking-widest">Premium Tech Collection</p>
                         </div>
                     </motion.div>
                 </div>

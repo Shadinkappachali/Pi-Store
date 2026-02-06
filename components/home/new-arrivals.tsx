@@ -14,7 +14,7 @@ const NEW_ARRIVALS = [
         reviews: 120,
         category: "Laptop",
         badge: "New",
-        image: ""
+        image: "https://images.unsplash.com/photo-1544377193-33dcf4d68fb5?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: "n2",
@@ -25,7 +25,7 @@ const NEW_ARRIVALS = [
         reviews: 45,
         category: "Laptop",
         badge: "New",
-        image: ""
+        image: "https://images.unsplash.com/photo-1616422285623-13ff0167c95c?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: "n3",
@@ -36,7 +36,7 @@ const NEW_ARRIVALS = [
         reviews: 230,
         category: "Mobile",
         badge: "New",
-        image: ""
+        image: "https://images.unsplash.com/photo-1603313011101-31c72ee2c606?q=80&w=800&auto=format&fit=crop"
     },
     {
         id: "n4",
@@ -47,7 +47,7 @@ const NEW_ARRIVALS = [
         reviews: 80,
         category: "Mobile",
         badge: "New",
-        image: ""
+        image: "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?q=80&w=800&auto=format&fit=crop"
     }
 ];
 

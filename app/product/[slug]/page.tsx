@@ -56,14 +56,19 @@ const PRODUCT = {
         { id: "v1", name: "Matte Black", color: "#111827" },
         { id: "v2", name: "Arctic White", color: "#F9FAFB" }
     ],
-    images: ["1", "2", "3", "4"] // Placeholders
+    images: [
+        "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1616422285623-13ff0167c95c?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=800&auto=format&fit=crop",
+        "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?q=80&w=800&auto=format&fit=crop"
+    ]
 };
 
 const RELATED_PRODUCTS = [
-    { id: "4", name: "DuraLink Pro USB-C Cable", price: 799, originalPrice: 1299, rating: 4.9, reviews: 2100, category: "Cables", image: "" },
-    { id: "2", name: "SonicSync Pro Earbuds", price: 1899, originalPrice: 2999, rating: 4.8, reviews: 840, category: "Earphones", image: "" },
-    { id: "6", name: "PowerVault 20000mAh", price: 2999, originalPrice: 4499, rating: 4.6, reviews: 450, category: "Power Banks", image: "" },
-    { id: "8", name: "NanoHub 7-in-1 Adapter", price: 3299, originalPrice: 4999, rating: 4.9, reviews: 45, category: "USB Hubs", image: "" },
+    { id: "4", name: "DuraLink Pro USB-C Cable", price: 799, originalPrice: 1299, rating: 4.9, reviews: 2100, category: "Cables", image: "https://images.unsplash.com/photo-1625805721666-3be3d4d3c3cc?q=80&w=800&auto=format&fit=crop" },
+    { id: "2", name: "SonicSync Pro Earbuds", price: 1899, originalPrice: 2999, rating: 4.8, reviews: 840, category: "Earphones", image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=800&auto=format&fit=crop" },
+    { id: "6", name: "PowerVault 20000mAh", price: 2999, originalPrice: 4499, rating: 4.6, reviews: 450, category: "Power Banks", image: "https://images.unsplash.com/photo-1625752321528-9820f121df0d?q=80&w=800&auto=format&fit=crop" },
+    { id: "8", name: "NanoHub 7-in-1 Adapter", price: 3299, originalPrice: 4999, rating: 4.9, reviews: 45, category: "USB Hubs", image: "https://images.unsplash.com/photo-1616422285623-13ff0167c95c?q=80&w=800&auto=format&fit=crop" },
 ];
 
 export default function ProductDetailPage() {
