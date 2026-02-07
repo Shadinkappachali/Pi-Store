@@ -59,7 +59,7 @@ export default function CartPage() {
                                                 {item.name}
                                             </Link>
                                             <button
-                                                onClick={() => removeFromCart(item.id)}
+                                                onClick={() => removeFromCart(item.id, item.variant)}
                                                 className="text-gray-400 hover:text-red-500 transition-colors"
                                             >
                                                 <Trash2 size={18} />
@@ -67,18 +67,24 @@ export default function CartPage() {
                                         </div>
                                         <p className="mt-1 text-xs font-bold text-primary uppercase tracking-widest">{item.category}</p>
 
+                                        {item.variant && (
+                                            <p className="mt-1.5 text-[10px] font-bold text-secondary bg-gray-100 px-2 py-1 rounded w-fit">
+                                                {item.variant}
+                                            </p>
+                                        )}
+
                                         <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
                                             {/* Quantity Control */}
                                             <div className="flex items-center overflow-hidden rounded-lg border border-border bg-gray-50">
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                                    onClick={() => updateQuantity(item.id, item.quantity - 1, item.variant)}
                                                     className="flex h-9 w-9 items-center justify-center hover:bg-white active:scale-95 transition-all"
                                                 >
                                                     <Minus size={14} />
                                                 </button>
                                                 <span className="w-8 text-center text-sm font-bold text-secondary">{item.quantity}</span>
                                                 <button
-                                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                                    onClick={() => updateQuantity(item.id, item.quantity + 1, item.variant)}
                                                     className="flex h-9 w-9 items-center justify-center hover:bg-white active:scale-95 transition-all"
                                                 >
                                                     <Plus size={14} />
