@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { formatINR } from "@/lib/utils";
@@ -18,62 +17,47 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
-// Mock Data for Comparison
-const MOCK_COMP_PRODUCTS = [
-    {
-        id: "1",
-        name: "HyperCharge 65W GaN",
-        price: 2499,
-        category: "Chargers",
-        specs: {
-            "Max Power": "65W",
-            "Technology": "GaN Fast Charge",
-            "Ports": "2x USB-C, 1x USB-A",
-            "Weight": "95g",
-            "Warranty": "1 Year",
-            "Safety": "Over-heat Protection"
-        }
-    },
-    {
-        id: "6",
-        name: "PowerVault 20000mAh",
-        price: 2999,
-        category: "Power Banks",
-        specs: {
-            "Max Power": "22.5W",
-            "Technology": "Lithium Polymer",
-            "Ports": "2x USB-A, 1x Micro USB",
-            "Weight": "420g",
-            "Warranty": "6 Months",
-            "Safety": "Short-circuit Protection"
-        }
-    },
-    {
-        id: "8",
-        name: "NanoHub 7-in-1 Adapter",
-        price: 3299,
-        category: "USB Hubs",
-        specs: {
-            "Max Power": "100W Pass-thru",
-            "Technology": "HDMI 4K, USB 3.0",
-            "Ports": "7 Integrated Ports",
-            "Weight": "110g",
-            "Warranty": "1 Year",
-            "Safety": "EMC Shielded"
-        }
-    }
-];
+import { useState, useEffect } from "react";
+import { getProducts, type Product } from "@/lib/firestore";
 
 const SPEC_KEYS = ["Max Power", "Technology", "Ports", "Weight", "Warranty", "Safety"];
 
 export default function ComparePage() {
-    const [selectedIds, setSelectedIds] = useState<string[]>(["1", "6"]);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
+    useEffect(() => {
+        async function loadProducts() {
+            setLoading(true);
+            const { success, products: fetchedProducts } = await getProducts();
+            if (success) {
+                setProducts(fetchedProducts);
+                // Pre-select first two products if available
+                if (fetchedProducts.length >= 2) {
+                    setSelectedIds([fetchedProducts[0].id, fetchedProducts[1].id]);
+                }
+            }
+            setLoading(false);
+        }
+        loadProducts();
+    }, []);
 
     const removeProduct = (id: string) => {
         setSelectedIds(selectedIds.filter(i => i !== id));
     };
 
-    const selectedProducts = MOCK_COMP_PRODUCTS.filter(p => selectedIds.includes(p.id));
+    const selectedProducts = products.filter(p => selectedIds.includes(p.id)).map(p => ({
+        ...p,
+        specs: {
+            "Max Power": p.category === "Chargers" ? "65W" : "N/A",
+            "Technology": "GaN Fast Charge",
+            "Ports": p.category === "USB Hubs" ? "7 Ports" : "USB-C",
+            "Weight": "N/A",
+            "Warranty": "1 Year",
+            "Safety": "Over-heat Protection"
+        }
+    }));
 
     return (
         <div className="bg-white pb-24 pt-16 min-h-screen">
@@ -88,7 +72,16 @@ export default function ComparePage() {
                     <p className="text-xl text-gray-500">Analyze features and specifications side-by-side to make the right choice.</p>
                 </div>
 
-                {selectedProducts.length > 0 ? (
+                {loading ? (
+                    <div className="flex flex-col gap-12">
+                        <div className="h-64 animate-pulse rounded-[3rem] bg-gray-50" />
+                        <div className="space-y-4">
+                            {[1, 2, 3, 4].map(i => (
+                                <div key={i} className="h-12 animate-pulse rounded-xl bg-gray-50" />
+                            ))}
+                        </div>
+                    </div>
+                ) : selectedProducts.length > 0 ? (
                     <div className="overflow-x-auto pb-8 custom-scrollbar">
                         <div className="min-w-[800px]">
                             <table className="w-full border-collapse">

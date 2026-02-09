@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/container";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+import { GadgetShowcase } from "./gadget-showcase";
 
 export function Hero() {
     return (
@@ -16,14 +17,7 @@ export function Hero() {
             <Container>
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
                     {/* Content */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.6 }}
-                    >
-                        <div className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
-                            Summer Sale: Up to 40% Off
-                        </div>
+                    <div className="relative z-10">
                         <h1 className="mt-8 text-5xl font-extrabold tracking-tight text-secondary sm:text-6xl lg:text-7xl">
                             Mobile & Laptop <br />
                             <span className="text-primary">Accessories</span>
@@ -57,25 +51,12 @@ export function Hero() {
                                 <p className="text-sm text-gray-400">Customer Rating</p>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
 
-                    {/* Image Placeholder/Illustration */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="relative h-[450px] w-full rounded-2xl bg-gray-50 flex items-center justify-center border border-border overflow-hidden lg:h-[600px]"
-                    >
-                        <img
-                            src="https://images.unsplash.com/photo-1491933382434-50028619b5da?q=80&w=1200&auto=format&fit=crop"
-                            alt="Premium Tech Collection"
-                            className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-secondary/20 to-transparent" />
-                        <div className="absolute bottom-6 left-6 rounded-lg bg-white/10 backdrop-blur-md px-4 py-2 border border-white/20">
-                            <p className="text-xs font-medium text-white uppercase tracking-widest">Premium Tech Collection</p>
-                        </div>
-                    </motion.div>
+                    {/* Image Showcase */}
+                    <div className="relative w-full">
+                        <GadgetShowcase />
+                    </div>
                 </div>
             </Container>
         </section>

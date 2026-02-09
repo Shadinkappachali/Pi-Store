@@ -96,7 +96,7 @@ export default function PCBuildsPage() {
                                             <div className="grid grid-cols-2 gap-4">
                                                 <Button className="h-14 rounded-2xl font-bold bg-[#25D366] hover:bg-[#20ba5a] text-white" asChild>
                                                     <a
-                                                        href={`https://wa.me/919656820000?text=${encodeURIComponent(`Hi! I'd like to order the ${build.name} pre-built PC (₹${totalPrice.toLocaleString('en-IN')})`)}`}
+                                                        href={`https://wa.me/917560850790?text=${encodeURIComponent(`Hi! I'd like to order the ${build.name} pre-built PC (₹${totalPrice.toLocaleString('en-IN')})`)}`}
                                                         target="_blank"
                                                     >
                                                         <ShoppingCart className="mr-2 h-5 w-5" />

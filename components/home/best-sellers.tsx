@@ -6,12 +6,25 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef } from "react";
 
-import { PRODUCTS } from "@/constants/products";
-
-const BEST_SELLERS = PRODUCTS.filter(p => p.isBestSeller);
+import { useState, useEffect } from "react";
+import { getProducts, type Product } from "@/lib/firestore";
 
 export function BestSellers() {
+    const [bestSellers, setBestSellers] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        async function loadProducts() {
+            setLoading(true);
+            const { success, products } = await getProducts();
+            if (success) {
+                setBestSellers(products.filter(p => p.isBestSeller));
+            }
+            setLoading(false);
+        }
+        loadProducts();
+    }, []);
 
     const scroll = (direction: "left" | "right") => {
         if (scrollRef.current) {
@@ -47,13 +60,19 @@ export function BestSellers() {
 
                 <div
                     ref={scrollRef}
-                    className="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar"
+                    className="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar min-h-[400px]"
                 >
-                    {BEST_SELLERS.map((product) => (
-                        <div key={product.id} className="min-w-[280px] w-[280px] snap-start">
-                            <ProductCard {...product} />
-                        </div>
-                    ))}
+                    {loading ? (
+                        [1, 2, 3, 4].map((i) => (
+                            <div key={i} className="min-w-[280px] w-[280px] h-[400px] animate-pulse rounded-3xl bg-gray-100" />
+                        ))
+                    ) : (
+                        bestSellers.map((product) => (
+                            <div key={product.id} className="min-w-[280px] w-[280px] snap-start">
+                                <ProductCard {...product} />
+                            </div>
+                        ))
+                    )}
                 </div>
             </Container>
         </section>

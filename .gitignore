@@ -38,4 +38,17 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+*.tsbuildinfo
 next-env.d.ts
+# firebase
+service-account.json
+pistore-*.json
+seeds/
+firestore-rules.txt
+storage.rules
+
+# vscode
+.vscode/
+
+# local env
+.env*.local

@@ -23,6 +23,8 @@ export const metadata: Metadata = {
 };
 
 import { CartProvider } from "@/context/cart-context";
+import { AuthProvider } from "@/context/auth-context";
+import { FavoritesProvider } from "@/context/favorites-context";
 
 export default function RootLayout({
   children,
@@ -34,12 +36,16 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} antialiased min-h-screen flex flex-col`}
       >
-        <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <WhatsAppButton />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <FavoritesProvider>
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+              <WhatsAppButton />
+            </FavoritesProvider>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

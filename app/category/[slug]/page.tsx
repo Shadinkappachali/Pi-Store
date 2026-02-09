@@ -30,8 +30,6 @@ const CATEGORY_DATA: Record<string, any> = {
     }
 };
 
-import { PRODUCTS } from "@/constants/products";
-
 // SLUG TO CATEGORY MAPPING
 const SLUG_TO_CATEGORIES: Record<string, string[]> = {
     mobile: ["Mobile", "Chargers", "Cables", "Cases", "Power Banks"],
@@ -46,9 +44,15 @@ const SLUG_TO_CATEGORIES: Record<string, string[]> = {
     audio: ["Earphones"]
 };
 
+import { useState, useEffect } from "react";
+import { getProducts, type Product } from "@/lib/firestore";
+
 export default function CategoryPage() {
     const params = useParams();
     const slug = params.slug as string;
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+
     const data = CATEGORY_DATA[slug] || {
         title: slug.charAt(0).toUpperCase() + slug.slice(1),
         description: `Browse our collection of ${slug} accessories.`,
@@ -57,7 +61,18 @@ export default function CategoryPage() {
     };
 
     const categorySlugs = SLUG_TO_CATEGORIES[slug] || [slug.charAt(0).toUpperCase() + slug.slice(1)];
-    const products = PRODUCTS.filter(p => categorySlugs.includes(p.category));
+
+    useEffect(() => {
+        async function loadProducts() {
+            setLoading(true);
+            const { success, products: allProducts } = await getProducts();
+            if (success) {
+                setProducts(allProducts.filter(p => categorySlugs.includes(p.category)));
+            }
+            setLoading(false);
+        }
+        loadProducts();
+    }, [categorySlugs]);
 
     return (
         <div className="pb-24">
@@ -121,9 +136,15 @@ export default function CategoryPage() {
                         </div>
 
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                            {products.map((p) => (
-                                <ProductCard key={p.id} {...p} />
-                            ))}
+                            {loading ? (
+                                [1, 2, 3].map((i) => (
+                                    <div key={i} className="h-[400px] w-full animate-pulse rounded-3xl bg-gray-100" />
+                                ))
+                            ) : (
+                                products.map((p) => (
+                                    <ProductCard key={p.id} {...p} />
+                                ))
+                            )}
                         </div>
 
                         {products.length > 12 && (

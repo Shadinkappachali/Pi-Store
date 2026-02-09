@@ -1,82 +1,122 @@
+"use client";
+
 import Link from "next/link";
-import { MessageSquare, Mail, Phone, MapPin, Instagram, Twitter, Facebook } from "lucide-react";
+import { MessageSquare, Mail, Phone, MapPin, Instagram, Twitter, Facebook, ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+    const pathname = usePathname();
+
+    if (pathname?.startsWith("/admin")) {
+        return null;
+    }
+
     return (
-        <footer className="w-full border-t border-border bg-white pt-16 pb-8">
+        <footer className="w-full bg-secondary border-t border-white/5 pt-20 pb-10 overflow-hidden relative">
+            {/* Background Decorative Gradient */}
+            <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 blur-[120px] rounded-full" />
+
             <Container>
-                <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="grid grid-cols-1 gap-16 lg:grid-cols-4 relative">
                     {/* Brand Info */}
-                    <div className="space-y-4">
-                        <Link href="/" className="text-2xl font-bold tracking-tighter text-secondary">
-                            Pi<span className="text-primary">Store</span>
+                    <div className="space-y-8">
+                        <Link href="/" className="text-3xl font-black tracking-tighter text-white">
+                            Pi<span className="text-primary italic">Store</span>
                         </Link>
-                        <p className="max-w-[240px] text-sm text-gray-500 leading-relaxed">
-                            Premium quality accessories for your digital lifestyle. Trusted by thousands of students and office goers in India.
+                        <p className="max-w-[280px] text-sm text-gray-400 leading-relaxed font-medium">
+                            The future of tech retail. Premium quality accessories for professionals and students. Designed for performance, built for reliability.
                         </p>
-                        <div className="flex items-center gap-4 text-secondary/60">
-                            <Link href="#" className="hover:text-primary transition-colors"><Instagram size={20} /></Link>
-                            <Link href="#" className="hover:text-primary transition-colors"><Twitter size={20} /></Link>
-                            <Link href="#" className="hover:text-primary transition-colors"><Facebook size={20} /></Link>
+                        <div className="flex items-center gap-4">
+                            {[
+                                { icon: Instagram, href: "#" },
+                                { icon: Twitter, href: "#" },
+                                { icon: Facebook, href: "#" }
+                            ].map((social, i) => (
+                                <Link
+                                    key={i}
+                                    href={social.href}
+                                    className="h-10 w-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-primary transition-all duration-300"
+                                >
+                                    <social.icon size={18} />
+                                </Link>
+                            ))}
                         </div>
                     </div>
 
-                    {/* Quick Links */}
-                    <div>
-                        <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-secondary">Quick Links</h3>
-                        <ul className="space-y-4 text-sm text-gray-500">
-                            <li><Link href="/shop" className="hover:text-primary transition-colors">Shop All</Link></li>
-                            <li><Link href="/category/mobile" className="hover:text-primary transition-colors">Mobile Accessories</Link></li>
-                            <li><Link href="/category/laptop" className="hover:text-primary transition-colors">Laptop Accessories</Link></li>
-                            <li><Link href="/about" className="hover:text-primary transition-colors">About Us</Link></li>
-                            <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
-                        </ul>
+                    {/* Quick Navigation */}
+                    <div className="grid grid-cols-2 gap-8 lg:col-span-2">
+                        <div>
+                            <h3 className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-white/50">Shop Categories</h3>
+                            <ul className="space-y-4">
+                                {[
+                                    { label: "Shop All", href: "/shop" },
+                                    { label: "Mobile Accessories", href: "/category/mobile" },
+                                    { label: "Laptop Accessories", href: "/category/laptop" },
+                                    { label: "Custom PC Builds", href: "/pc-builds" }
+                                ].map((link) => (
+                                    <li key={link.label}>
+                                        <Link href={link.href} className="group flex items-center text-sm font-bold text-gray-400 hover:text-white transition-colors">
+                                            <span>{link.label}</span>
+                                            <ArrowRight size={14} className="ml-2 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 className="mb-6 text-xs font-black uppercase tracking-[0.2em] text-white/50">Company</h3>
+                            <ul className="space-y-4 text-sm font-bold text-gray-400">
+                                {[
+                                    { label: "About Our Store", href: "/about" },
+                                    { label: "Contact Us", href: "/contact" },
+                                    { label: "Shipping Policy", href: "/shipping" },
+                                    { label: "Privacy Policy", href: "/privacy" }
+                                ].map((link) => (
+                                    <li key={link.label}>
+                                        <Link href={link.href} className="hover:text-white transition-colors">{link.label}</Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
 
-                    {/* Support */}
-                    <div>
-                        <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-secondary">Support</h3>
-                        <ul className="space-y-4 text-sm text-gray-500">
-                            <li><Link href="/faq" className="hover:text-primary transition-colors">FAQs</Link></li>
-                            <li><Link href="/shipping" className="hover:text-primary transition-colors">Shipping Policy</Link></li>
-                            <li><Link href="/returns" className="hover:text-primary transition-colors">Returns & Replacements</Link></li>
-                            <li><Link href="/track" className="hover:text-primary transition-colors">Track Order</Link></li>
-                            <li><Link href="/warranty" className="hover:text-primary transition-colors">Warranty Info</Link></li>
-                        </ul>
-                    </div>
+                    {/* Contact & Support */}
+                    <div className="space-y-8">
+                        <div className="space-y-4">
+                            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/50">Visit Us</h3>
+                            <div className="flex items-start gap-4 text-sm text-gray-400 font-medium">
+                                <div className="h-10 w-10 shrink-0 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-primary">
+                                    <MapPin size={20} />
+                                </div>
+                                <p className="leading-relaxed">Canoliz Tower, Near Panchayat Office, Mampad, Kerala - 676542</p>
+                            </div>
+                        </div>
 
-                    {/* Contact Info */}
-                    <div className="space-y-4 text-sm text-gray-500">
-                        <h3 className="mb-6 text-sm font-bold uppercase tracking-widest text-secondary">Contact Us</h3>
-                        <div className="flex items-start gap-3">
-                            <MapPin className="h-5 w-5 shrink-0 text-primary" />
-                            <p>Canoliz Tower, Near Panchayat Office, Mampad, Kerala - 676542</p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Phone className="h-5 w-5 shrink-0 text-primary" />
-                            <p>+91 96568 20000</p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <Mail className="h-5 w-5 shrink-0 text-primary" />
-                            <p>contact@pibots.in</p>
-                        </div>
                         <div className="pt-2">
-                            <Link
-                                href="https://wa.me/919656820000"
-                                target="_blank"
-                                className="flex items-center gap-2 font-medium text-green-600 hover:text-green-700"
+                            <Button
+                                asChild
+                                className="w-full h-14 rounded-2xl bg-[#25D366] hover:bg-[#128C7E] text-white font-bold text-lg gap-2 shadow-lg shadow-green-500/20 transition-all active:scale-95"
                             >
-                                <MessageSquare className="h-5 w-5" />
-                                <span>WhatsApp support</span>
-                            </Link>
+                                <Link href="https://wa.me/917560850790" target="_blank">
+                                    <MessageSquare size={20} />
+                                    WhatsApp Support
+                                </Link>
+                            </Button>
                         </div>
                     </div>
                 </div>
 
-                {/* Bottom Footer */}
-                <div className="mt-16 border-t border-border pt-8 text-center text-xs text-gray-400">
-                    <p>© {new Date().getFullYear()} Pi Store India. All rights reserved. Designed for performance.</p>
+                {/* Bottom Bar */}
+                <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">
+                        © {new Date().getFullYear()} <span className="text-white">Pi Store India</span>. Built for the future.
+                    </p>
+                    <div className="flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-gray-500">
+                        <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+                        <Link href="/cookies" className="hover:text-white transition-colors">Cookie Policy</Link>
+                    </div>
                 </div>
             </Container>
         </footer>

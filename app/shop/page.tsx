@@ -13,21 +13,38 @@ import {
     SlidersHorizontal,
     X
 } from "lucide-react";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import { PRODUCTS, CATEGORIES, BRANDS } from "@/constants/products";
+import { getProducts, type Product } from "@/lib/firestore";
 
 export default function ShopPage() {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, 300000]);
     const [sortBy, setSortBy] = useState("popular");
     const [searchQuery, setSearchQuery] = useState("");
     const [showMobileFilters, setShowMobileFilters] = useState(false);
 
+    useEffect(() => {
+        async function loadProducts() {
+            setLoading(true);
+            const { success, products: fetchedProducts } = await getProducts();
+            if (success) {
+                setProducts(fetchedProducts);
+            }
+            setLoading(false);
+        }
+        loadProducts();
+    }, []);
+
+    const categories = useMemo(() => Array.from(new Set(products.map(p => p.category))), [products]);
+    const brands = useMemo(() => Array.from(new Set(products.map(p => p.brand))), [products]);
+
     const filteredProducts = useMemo(() => {
-        return PRODUCTS.filter(p => {
+        return products.filter(p => {
             const matchCategory = !selectedCategory || p.category === selectedCategory;
             const matchBrand = !selectedBrand || p.brand === selectedBrand;
             const matchPrice = p.price >= priceRange[0] && p.price <= priceRange[1];
@@ -36,10 +53,10 @@ export default function ShopPage() {
         }).sort((a, b) => {
             if (sortBy === "price-low") return a.price - b.price;
             if (sortBy === "price-high") return b.price - a.price;
-            if (sortBy === "newest") return parseInt(b.id) - parseInt(a.id);
+            if (sortBy === "newest") return b.createdAt.getTime() - a.createdAt.getTime();
             return b.reviews - a.reviews; // For 'popular'
         });
-    }, [selectedCategory, selectedBrand, priceRange, sortBy, searchQuery]);
+    }, [products, selectedCategory, selectedBrand, priceRange, sortBy, searchQuery]);
 
     const clearFilters = () => {
         setSelectedCategory(null);
@@ -110,7 +127,7 @@ export default function ShopPage() {
                             <div>
                                 <h4 className="mb-4 text-sm font-bold uppercase tracking-widest text-gray-400">Category</h4>
                                 <div className="space-y-2">
-                                    {CATEGORIES.map(cat => (
+                                    {categories.map(cat => (
                                         <label key={cat} className="flex items-center gap-2 text-sm text-gray-600 transition-colors hover:text-primary cursor-pointer">
                                             <input
                                                 type="radio"
@@ -129,7 +146,7 @@ export default function ShopPage() {
                             <div>
                                 <h4 className="mb-4 text-sm font-bold uppercase tracking-widest text-gray-400">Brand</h4>
                                 <div className="space-y-2">
-                                    {BRANDS.map(brand => (
+                                    {brands.map(brand => (
                                         <label key={brand} className="flex items-center gap-2 text-sm text-gray-600 transition-colors hover:text-primary cursor-pointer">
                                             <input
                                                 type="radio"
@@ -168,9 +185,15 @@ export default function ShopPage() {
 
                     {/* Product Grid */}
                     <main className="flex-1">
-                        {filteredProducts.length > 0 ? (
+                        {loading ? (
                             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                                <AnimatePresence>
+                                {[1, 2, 3, 4, 5, 6].map((i) => (
+                                    <div key={i} className="h-[400px] w-full animate-pulse rounded-3xl bg-gray-100" />
+                                ))}
+                            </div>
+                        ) : filteredProducts.length > 0 ? (
+                            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                                <AnimatePresence mode="popLayout">
                                     {filteredProducts.map((p) => (
                                         <motion.div
                                             key={p.id}
@@ -180,7 +203,12 @@ export default function ShopPage() {
                                             exit={{ opacity: 0, scale: 0.9 }}
                                             transition={{ duration: 0.2 }}
                                         >
-                                            <ProductCard {...p} badge={!p.available ? "Out of Stock" : undefined} />
+                                            <ProductCard
+                                                {...p}
+                                                badge={!p.available ? "Unpublished" : p.badge}
+                                                stock={p.stock}
+                                                isUnlimited={p.isUnlimited}
+                                            />
                                         </motion.div>
                                     ))}
                                 </AnimatePresence>
@@ -230,7 +258,7 @@ export default function ShopPage() {
                                 <div>
                                     <h4 className="mb-4 text-xs font-bold uppercase tracking-widest text-gray-400">Category</h4>
                                     <div className="grid grid-cols-1 gap-2">
-                                        {CATEGORIES.map(cat => (
+                                        {categories.map(cat => (
                                             <button
                                                 key={cat}
                                                 onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
@@ -245,7 +273,7 @@ export default function ShopPage() {
                                 <div>
                                     <h4 className="mb-4 text-xs font-bold uppercase tracking-widest text-gray-400">Brand</h4>
                                     <div className="grid grid-cols-2 gap-2">
-                                        {BRANDS.map(brand => (
+                                        {brands.map(brand => (
                                             <button
                                                 key={brand}
                                                 onClick={() => setSelectedBrand(selectedBrand === brand ? null : brand)}

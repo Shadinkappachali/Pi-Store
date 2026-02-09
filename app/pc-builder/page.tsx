@@ -64,7 +64,7 @@ function PCBuilderContent() {
         message += `\nTotal Estimated Price: ₹${totalPrice.toLocaleString('en-IN')}\n\nCould you please provide a final quote and delivery details?`;
 
         const encodedMessage = encodeURIComponent(message);
-        window.open(`https://wa.me/919656820000?text=${encodedMessage}`, '_blank');
+        window.open(`https://wa.me/917560850790?text=${encodedMessage}`, '_blank');
     };
 
     const totalPrice = Object.values(selections).reduce((sum, comp) => sum + (comp?.price || 0), 0);

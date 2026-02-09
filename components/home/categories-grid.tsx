@@ -27,12 +27,8 @@ export function CategoriesGrid() {
 
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 lg:gap-8">
                     {categories.map((category, index) => (
-                        <motion.div
+                        <div
                             key={category.name}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.05 }}
-                            viewport={{ once: true }}
                         >
                             <Link
                                 href={category.href}
@@ -43,7 +39,7 @@ export function CategoriesGrid() {
                                 </div>
                                 <h3 className="mt-4 font-semibold text-secondary">{category.name}</h3>
                             </Link>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </Container>

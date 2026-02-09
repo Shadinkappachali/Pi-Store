@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,17 +38,37 @@ const DEVICE_DATA = {
     }
 };
 
-const MOCK_COMPATIBLE_PRODUCTS = [
-    { id: "1", name: "HyperCharge 65W GaN Fast Charger", price: 2499, originalPrice: 3999, rating: 4.9, reviews: 1250, category: "Chargers", image: "" },
-    { id: "4", name: "DuraLink Pro USB-C Cable", price: 799, originalPrice: 1299, rating: 4.9, reviews: 2100, category: "Cables", image: "" },
-    { id: "8", name: "NanoHub 7-in-1 Adapter", price: 3299, originalPrice: 4999, rating: 4.9, reviews: 45, category: "USB Hubs", image: "" },
-];
+import { useState, useEffect, useMemo } from "react";
+import { getProducts, type Product } from "@/lib/firestore";
 
 export default function CompatibilityFinder() {
     const [deviceType, setDeviceType] = useState<"mobile" | "laptop" | null>(null);
     const [brand, setBrand] = useState<string | null>(null);
     const [model, setModel] = useState<string | null>(null);
     const [showResults, setShowResults] = useState(false);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        async function loadProducts() {
+            setLoading(true);
+            const { success, products: fetchedProducts } = await getProducts();
+            if (success) {
+                setProducts(fetchedProducts);
+            }
+            setLoading(false);
+        }
+        loadProducts();
+    }, []);
+
+    const compatibleProducts = useMemo(() => {
+        if (!deviceType) return [];
+        const targetCategories = deviceType === "mobile"
+            ? ["Chargers", "Cables", "Cases", "Power Banks", "Mobile"]
+            : ["Laptop", "Laptop Accessories", "Keyboards", "Mouse", "USB Hubs"];
+
+        return products.filter(p => targetCategories.includes(p.category)).slice(0, 6);
+    }, [deviceType, products]);
 
     const reset = () => {
         setDeviceType(null);
@@ -211,13 +230,23 @@ export default function CompatibilityFinder() {
                                         <span className="h-0.5 flex-1 bg-gray-100 mx-6 hidden sm:block" />
                                     </div>
                                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                                        {MOCK_COMPATIBLE_PRODUCTS.map(p => (
-                                            <ProductCard
-                                                key={p.id}
-                                                {...p}
-                                                badge="Perfect Match"
-                                            />
-                                        ))}
+                                        {loading ? (
+                                            [1, 2, 3].map((i) => (
+                                                <div key={i} className="h-64 animate-pulse rounded-3xl bg-gray-100" />
+                                            ))
+                                        ) : compatibleProducts.length > 0 ? (
+                                            compatibleProducts.map(p => (
+                                                <ProductCard
+                                                    key={p.id}
+                                                    {...p}
+                                                    badge="Perfect Match"
+                                                />
+                                            ))
+                                        ) : (
+                                            <div className="col-span-full py-12 text-center text-gray-500 font-medium">
+                                                No specific accessories found for this category yet.
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
